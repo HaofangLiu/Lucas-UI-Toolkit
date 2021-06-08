@@ -22,25 +22,17 @@
         line-height: 30px;
         font-weight: 500;
         border-bottom: 2px solid #ddd;
-        position: relative;
       }
 
       .tab-item {
         margin-right: 30px;
         cursor: pointer;
+        margin-bottom: -2px;
       }
 
       .tab-item.active {
         color: #409eff;
-      }
-
-      .line {
-        background: #409eff;
-        /* width: 30px; */
-        height: 2px;
-        position: absolute;
-        top: 100%;
-        transition: all 0.3s;
+        border-bottom: 2px solid #409eff;
       }
 
       .content {
@@ -58,29 +50,10 @@
       <h2>Tab选项卡</h2>
       <div class="tabs">
         <div class="tab-header">
-          <span class="tab-item active">Tab 111</span>
+          <span class="tab-item active">Tab1</span>
           <span class="tab-item">Tab2</span>
           <span class="tab-item">Tab3</span>
-          <span class="tab-item">Tab4-4</span>
-          <span class="line"></span>
-        </div>
-        <div class="tab-content">
-          <div class="content active">content 1</div>
-          <div class="content">content 2</div>
-          <div class="content">content 3</div>
-          <div class="content">content 4</div>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <h2>Tab选项卡</h2>
-      <div class="tabs">
-        <div class="tab-header">
-          <span class="tab-item active">Tab 111</span>
-          <span class="tab-item">Tab2</span>
-          <span class="tab-item">Tab3</span>
-          <span class="tab-item">Tab4-4</span>
-          <span class="line"></span>
+          <span class="tab-item">Tab4</span>
         </div>
         <div class="tab-content">
           <div class="content active">content 1</div>
@@ -92,49 +65,24 @@
     </div>
 
     <script>
-      // $ for HTML Element $$ for NodeList
-      class Tab {
-        constructor($container) {
-          this.$container = $container;
-          this.$$itemTab = $container.querySelectorAll(".tab-item");
-          this.$$contentTab = $container.querySelectorAll(".content");
-          this.$line = $container.querySelector(".line");
-          this.init();
-          this.bind();
-        }
-
-        init() {
-          this.$line.style.width = this.$$itemTab[0].offsetWidth + "px";
-        }
-
-        bind() {
-          //
-          this.$$itemTab.forEach(($tab) => {
-            $tab.onclick = () => {
-              this.$$itemTab.forEach(($tab) => {
-                $tab.classList.remove("active");
-              });
-              $tab.classList.add("active");
-              // this.classList.add("active");假设用function的时候可以用this
-
-              // console.log($tab.offsetWidth) //width + padding + border width
-              // console.log($tab.offsetLeft)  // 跟父（注意加relative）的left的宽度
-
-              this.$line.style.width = $tab.offsetWidth + "px";
-              this.$line.style.transform = `translateX(${$tab.offsetLeft}px)`;
-
-              const index = Array.from(this.$$itemTab).indexOf($tab);
-              this.$$contentTab.forEach(($content) => {
-                $content.classList.remove("active");
-              });
-              this.$$contentTab[index].classList.add("active");
-            };
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => document.querySelectorAll(s);
+      // 用$开头的命名方式来记录是dom节点
+      const $itemtab = $$(".tab-item");
+      const $contenttab = $$(".tab-content .content");
+      $itemtab.forEach(($tab) => {
+        $tab.onclick = () => {
+          $itemtab.forEach(($tab) => {
+            $tab.classList.remove("active");
           });
-        }
-      }
-
-      document.querySelectorAll(".tabs").forEach(($container) => {
-        new Tab($container);
+          $tab.classList.add("active");
+          // this.classList.add("active");假设用function的时候可以用this
+          const index = Array.from($itemtab).indexOf($tab);
+          $contenttab.forEach(($content) => {
+            $content.classList.remove("active");
+          });
+          $contenttab[index].classList.add("active");
+        };
       });
     </script>
   </body>
